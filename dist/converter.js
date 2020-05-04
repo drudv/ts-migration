@@ -32,8 +32,8 @@ function recastParse(code, options, parse) {
         parser: {
             parse: (code) => {
                 return parse(code, Object.assign({}, options, { tokens: true }));
-            }
-        }
+            },
+        },
     });
 }
 function buildRecastGenerate(rootDir = global.process.cwd()) {
@@ -46,11 +46,11 @@ function buildRecastGenerate(rootDir = global.process.cwd()) {
 const recastPlugin = function (rootDir) {
     return {
         parserOverride: recastParse,
-        generatorOverride: buildRecastGenerate(rootDir)
+        generatorOverride: buildRecastGenerate(rootDir),
     };
 };
 exports.babelOptions = (rootDir) => ({
-    plugins: [recastPlugin(rootDir), babel_plugin_flow_to_typescript_1.default, plugin_syntax_dynamic_import_1.default]
+    plugins: [recastPlugin(rootDir), babel_plugin_flow_to_typescript_1.default, plugin_syntax_dynamic_import_1.default],
 });
 const successFiles = [];
 const errorFiles = [];
@@ -60,6 +60,7 @@ function convert(files, rootDir) {
             console.log(`${i} of ${files.length}: Converting ${path}`);
             let res;
             try {
+                console.log("options", exports.babelOptions(rootDir));
                 res = yield babel.transformFileAsync(path, exports.babelOptions(rootDir));
                 res.code = stripComments_1.stripComments(res.code, ["// @flow", "// @noflow"])[0];
             }
@@ -73,7 +74,7 @@ function convert(files, rootDir) {
         }));
         return {
             successFiles,
-            errorFiles
+            errorFiles,
         };
     });
 }

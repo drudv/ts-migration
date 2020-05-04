@@ -42,7 +42,6 @@ program
 
 program
   .command("convert-codebase")
-  .option("-c, --commit")
   // TODO support directory?
   .option(
     "--files <list>",
@@ -67,7 +66,7 @@ program
         extensions: [".js", ".jsx"]
       };
       console.log(paths);
-      convertCodebase(paths, !!cmd.commit, cmd.files);
+      convertCodebase(paths, cmd.files);
     }
   );
 

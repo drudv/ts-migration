@@ -30,7 +30,6 @@ commander_1.default
 });
 commander_1.default
     .command("convert-codebase")
-    .option("-c, --commit")
     // TODO support directory?
     .option("--files <list>", "A comma-seperated list of files to convert", (f) => f.split(","))
     .option("--exclude <list>", "A comma-seperated list of strings to exclude", (f) => f.split(","))
@@ -38,7 +37,7 @@ commander_1.default
     console.log("Converting the codebase from Flow to Typescript");
     const paths = Object.assign({}, filePaths, { exclude: [...filePaths.exclude, ...(cmd.exclude || [])], extensions: [".js", ".jsx"] });
     console.log(paths);
-    convertCodebase_1.default(paths, !!cmd.commit, cmd.files);
+    convertCodebase_1.default(paths, cmd.files);
 });
 commander_1.default
     .command("ignore-errors")

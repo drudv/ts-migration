@@ -17,8 +17,8 @@ function recastParse(
     parser: {
       parse: (code: string) => {
         return parse(code, { ...options, tokens: true });
-      }
-    }
+      },
+    },
   });
 }
 
@@ -30,15 +30,15 @@ function buildRecastGenerate(rootDir: string = global.process.cwd()) {
   };
 }
 
-const recastPlugin = function(rootDir: string) {
+const recastPlugin = function (rootDir: string) {
   return {
     parserOverride: recastParse,
-    generatorOverride: buildRecastGenerate(rootDir)
+    generatorOverride: buildRecastGenerate(rootDir),
   };
 };
 
 export const babelOptions = (rootDir: string): babel.TransformOptions => ({
-  plugins: [recastPlugin(rootDir), plugin, dynamicImport]
+  plugins: [recastPlugin(rootDir), plugin, dynamicImport],
 });
 
 const successFiles: string[] = [];
@@ -49,6 +49,7 @@ export default async function convert(files: string[], rootDir: string) {
     console.log(`${i} of ${files.length}: Converting ${path}`);
     let res;
     try {
+      console.log("options", babelOptions(rootDir));
       res = await babel.transformFileAsync(path, babelOptions(rootDir));
       res!.code = stripComments(res!.code!, ["// @flow", "// @noflow"])[0];
     } catch (err) {
@@ -61,6 +62,6 @@ export default async function convert(files: string[], rootDir: string) {
   });
   return {
     successFiles,
-    errorFiles
+    errorFiles,
   };
 }
